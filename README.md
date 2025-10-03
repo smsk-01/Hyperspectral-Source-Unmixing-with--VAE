@@ -17,7 +17,7 @@ A hyperspectral image can be seen as a 3D data cube:
   - The **endmembers** (pure sources),  
   - The **abundance maps** (fractions of each material in each pixel).  
 
-Mathematically, for each pixel \(x\):  
+Mathematically, for each pixel $\(x\):  
 
 \[
 x \approx \sum_{i=1}^{k} a_i e_i, \quad a_i \geq 0, \quad \sum_i a_i = 1
@@ -25,7 +25,7 @@ x \approx \sum_{i=1}^{k} a_i e_i, \quad a_i \geq 0, \quad \sum_i a_i = 1
 
 where:  
 - \(e_i\) = endmembers (pure spectral signatures)  
-- \(a_i\) = abundances (proportions of materials)  
+- \(a_i\) = abundances (proportions of materials) $ 
 
 ---
 
