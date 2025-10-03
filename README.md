@@ -1,78 +1,112 @@
-# Hyperspectral Source Unmixing with β-VAE
+# Hyperspectral Source Unmixing with β-VAE (Dirichlet Latent Space)
 
-## Project Overview
-This repository contains an implementation of **hyperspectral source unmixing** using a **β-Variational Autoencoder (β-VAE)** in **PyTorch**.  
-The objective is to decompose a hyperspectral image into a set of pure spectral signatures (*endmembers*) and their corresponding *abundance maps*.  
+## 📌 Project Overview
+This repository contains an implementation of **hyperspectral source unmixing** using a **β-Variational Autoencoder (β-VAE)** with a **Dirichlet latent prior** in **PyTorch**.  
+The model decomposes each pixel spectrum into:
+- **Endmembers** $E = [e_1, \dots, e_k]$ (pure spectral signatures),
+- **Abundances** $a = [a_1, \dots, a_k]$ (fractions of materials).
 
-Hyperspectral unmixing has numerous applications in **remote sensing**, **geosciences**, **environmental monitoring**, and **agriculture**, where it is crucial to detect and quantify the materials present in an observed scene.
-
----
-
-## Hyperspectral Source Unmixing: Theory
-A hyperspectral image can be seen as a 3D data cube:  
-
-- Each pixel corresponds to a **spectrum** (a vector of reflectance values over many wavelengths).  
-- Each spectrum is generally a **linear mixture** of pure material spectra, called **endmembers**.  
-- The problem of **spectral unmixing** consists in retrieving:  
-  - The **endmembers** (pure sources),  
-  - The **abundance maps** (fractions of each material in each pixel).  
-
-Mathematically, for each pixel $x$:  
-$x$ $=$ $\sum_{i=1}^{k}$ $a_i$ $e_i$ $+$ $w_i$, with $a_i$ $\geq$ $0$ and $\sum_i a_i$ $=$ $1$
-
-
-
-where:  
-- $e_i$ = endmembers (pure spectral signatures)  
-- $a_i\$ = abundances (proportions of materials) 
+The decoder is designed to recover the **linear mixing model** while also learning **nonlinear residuals**.
 
 ---
 
-## Classical Approaches (without AI)
-Before deep learning, hyperspectral unmixing was tackled with **geometric and optimization-based methods**, such as:
+## 🔬 Hyperspectral Source Unmixing: Theory
 
-- **PCA / NMF (Non-Negative Matrix Factorization)** – factorizing spectra under positivity constraints  
-- **VCA (Vertex Component Analysis)** – extracting convex vertices in spectral space  
-- **Sparse regression-based methods** – enforcing sparsity in abundance estimation  
+### Linear Mixing Model (LMM)
+A hyperspectral pixel $x \in \mathbb{R}^L$ can be modeled as:
 
-These methods are interpretable but often limited when noise, nonlinear mixing, or complex spatial structures are present.
+$$
+x = Ea + w = \sum_{i=1}^k a_i e_i + w
+$$
+
+with the **abundance constraints**:
+
+$$
+a_i \geq 0, \quad \sum_{i=1}^k a_i = 1
+$$
+
+- $E \in \mathbb{R}^{L \times k}$: endmember matrix,  
+- $a \in \mathbb{R}^k$: abundance vector,  
+- $w$: noise.  
 
 ---
 
-## Deep Learning & Autoencoders
-Autoencoders have emerged as a powerful tool for hyperspectral unmixing:
+### Nonlinear Mixing Extension
+To better capture **nonlinear scattering effects**, we extend the model as:
 
-- **Standard Autoencoders** learn a compressed latent representation of spectra and reconstruct them  
-- **Variational Autoencoders (VAEs)** add a **probabilistic latent space**, improving **regularization** and allowing **robust generation**  
-- **β-VAE** introduces a scaling factor β on the KL-divergence term, encouraging **disentangled latent factors**, which is beneficial for separating spectral sources  
+$$
+x \approx Ea + \phi(a)
+$$
 
-### Latent Space Constraints
-Two approaches for enforcing abundance constraints are explored:
+where $\phi(a)$ is a nonlinear correction learned by the decoder.  
+This matches the implemented architecture where:
 
-1. **Truncated Gaussian latent space** – reparameterization + normalization  
-2. **Dirichlet latent space** – ensures non-negativity and sum-to-one naturally  
+- $Ea$ is modeled by a **linear PositiveLinear layer** (`self.M`),
+- $\phi(a)$ is modeled by a **deep decoder network** (`decoder_phi_a`).
+
+---
+
+### Dirichlet Latent Prior
+Instead of Gaussian latents, abundances are drawn from a **Dirichlet distribution**:
+
+$$
+a \sim \text{Dirichlet}(\alpha), \quad \alpha = \text{Softmax}(f(x))
+$$
+
+This ensures that:
+- $a_i \geq 0$ (positivity),
+- $\sum_i a_i = 1$ (sum-to-one).  
+
+Thus the VAE naturally enforces the **abundance constraints**.
+
+---
+
+### Loss Function
+The training loss combines:
+1. **Spectral Angle Distance (SAD)** — angular similarity between original and reconstructed spectra:
+
+$$
+\text{SAD}(x, \hat{x}) = \arccos \left( \frac{\langle x, \hat{x} \rangle}{\|x\|\|\hat{x}\|} \right)
+$$
+
+2. **MSE Reconstruction Loss** — penalizing intensity errors:
+
+$$
+\text{MSE}(x, \hat{x}) = \|x - \hat{x}\|^2
+$$
+
+3. **KL Divergence** between posterior $q(a|x)$ and Dirichlet prior $p(a)$:
+
+$$
+KL[q(a|x) \;||\; p(a)]
+$$
+
+4. Weighted β-VAE objective:
+
+$$
+\mathcal{L} = \text{SAD}^k + \gamma \, (\text{MSE})^m + \beta \, (KL)^n
+$$
+
+where $(k,m,n)$ are scaling exponents.
 
 ---
 
 ## 🛠️ Implementation Details
 - **Framework**: [PyTorch](https://pytorch.org/)  
-- **Model**: β-VAE with customizable encoder/decoder architectures  
-- **Dataset**: Samson dataset (3 endmembers)  
-- **Evaluation metrics**:
-  - **MSE** between original and reconstructed spectra  
-  - **Spectral Angle Mapper (SAM)** for endmember similarity  
-  - **Spatial coherence** of abundance maps  
+- **Encoder**: MLP with BatchNorm + ReLU  
+- **Latent space**: Dirichlet via `Softmax` → `Dirichlet(alpha)`  
+- **Decoder**:  
+  - $Ea$ linear term via `PositiveLinear` (`self.M`)  
+  - Nonlinear correction $\phi(a)$ via deep MLP (`decoder_phi_a`)  
+- **Loss components**: SAD, MSE, Dirichlet KL divergence  
+- **Dataset**: Samson (3 endmembers)  
 
 ---
 
-## 📊 Results & Analysis
-The trained β-VAE model can:  
-
-- Extract **endmembers** consistent with ground-truth reference spectra  
-- Provide **abundance maps** that are spatially coherent  
-- Outperform classical baselines in terms of robustness to noise and reconstruction error  
-
-> ⚠️ A critical discussion of results is included in the notebook, highlighting trade-offs between different latent space parameterizations (Gaussian vs Dirichlet) and the role of β in disentanglement.
+## 📊 Results
+- Extracted **endmembers** close to ground-truth spectra,  
+- Produced **abundance maps** with smooth spatial structure,  
+- Outperformed classical NMF/VCA under noise and nonlinearity.
 
 ---
 
