@@ -18,7 +18,7 @@ A hyperspectral image can be seen as a 3D data cube:
   - The **abundance maps** (fractions of each material in each pixel).  
 
 Mathematically, for each pixel $x$:  
-$x$ $\sum_{i=1}^{k}$ $a_i$ $e_i$ $+$ $w_i$, with $a_i$ $\geq$ $0$ and $\sum_i a_i$ $=$ $1$
+$x$ $=$ $\sum_{i=1}^{k}$ $a_i$ $e_i$ $+$ $w_i$, with $a_i$ $\geq$ $0$ and $\sum_i a_i$ $=$ $1$
 
 
 
