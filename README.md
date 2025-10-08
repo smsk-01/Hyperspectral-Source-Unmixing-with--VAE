@@ -107,6 +107,8 @@ where $(k,m,n)$ are scaling exponents.
 - Extracted **endmembers** close to ground-truth spectra,  
 - Produced **abundance maps** with smooth spatial structure,  
 - Outperformed classical NMF/VCA under noise and nonlinearity.
+- <img width="847" height="547" alt="image" src="https://github.com/user-attachments/assets/b9ffa839-7e92-4381-97e1-188debe042d8" />
+
 
 ---
 
