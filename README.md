@@ -127,11 +127,7 @@ $$
 Regularization towards a **uniform Dirichlet** ($\text{Dir}(\mathbf{1})$):
 
 $$
-\mathcal{L}_{\text{KL}} =
-\log \Gamma\!\left(\sum_i \alpha_i\right)
-- \sum_i \log \Gamma(\alpha_i)
-- \log \Gamma(M)
-+ \sum_i (\alpha_i - 1)\left[\psi(\alpha_i) - \psi\!\left(\sum_j \alpha_j\right)\right]
+\mathcal{L}_{\text{KL}} = \log \Gamma\!\left(\sum_i \alpha_i\right) - \sum_i \log \Gamma(\alpha_i) - \log \Gamma(M) + \sum_i (\alpha_i - 1)\left[\psi(\alpha_i) - \psi\!\left(\sum_j \alpha_j\right)\right]
 $$
 
 ### 3️⃣ Total Objective
