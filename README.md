@@ -71,7 +71,7 @@ so that $\mathbf{A}$ lies on a **unit simplex**.
 We adopt a **Dirichlet latent prior**:
 
 $$
-\text{Dir}(\boldsymbol{\alpha}) = \frac{\Gamma\!\left(\sum_i \alpha_i\right)}{\prod_i \Gamma(\alpha_i)} \prod_i x_i^{\alpha_i - 1}
+\text{Dir}(\boldsymbol{\alpha}) = \frac{\Gamma\left(\sum_i \alpha_i\right)}{\prod_i \Gamma(\alpha_i)} \prod_i x_i^{\alpha_i - 1}
 $$
 
 where $\boldsymbol{\alpha} = [\alpha_1, \dots, \alpha_M]$ are concentration parameters.  
@@ -119,7 +119,7 @@ where
 
 $$
 \text{SAD}(\mathbf{x}, \hat{\mathbf{x}}) = 
-\frac{\arccos\!\left(\frac{\langle \mathbf{x}, \hat{\mathbf{x}} \rangle}{\|\mathbf{x}\|_2 \|\hat{\mathbf{x}}\|_2}\right)}{\pi}
+\frac{\arccos\left(\frac{\langle \mathbf{x}, \hat{\mathbf{x}} \rangle}{\|\mathbf{x}\|_2 \|\hat{\mathbf{x}}\|_2}\right)}{\pi}
 $$
 
 ### 2️⃣ KL Divergence
@@ -127,7 +127,7 @@ $$
 Regularization towards a **uniform Dirichlet** ($\text{Dir}(\mathbf{1})$):
 
 $$
-\mathcal{L}_{\text{KL}} = \log \Gamma\!\left(\sum_i \alpha_i\right) - \sum_i \log \Gamma(\alpha_i) - \log \Gamma(M) + \sum_i (\alpha_i - 1)\left[\psi(\alpha_i) - \psi\!\left(\sum_j \alpha_j\right)\right]
+\mathcal{L}_{\text{KL}} = \log \Gamma\left(\sum_i \alpha_i\right) - \sum_i \log \Gamma(\alpha_i) - \log \Gamma(M) + \sum_i (\alpha_i - 1)\left[\psi(\alpha_i) - \psi\!\left(\sum_j \alpha_j\right)\right]
 $$
 
 ### 3️⃣ Total Objective
@@ -160,15 +160,9 @@ $$
 
 ## 📈 Results
 
-| Dataset | Method | Endmember RMSE ↓ | Abundance RMSE ↓ |
-|----------|---------|------------------|------------------|
-| **Samson** | N-FINDR + FCLS | 0.0847 | 0.1234 |
-| **Samson** | CNN-based | 0.0621 | 0.0987 |
-| **Samson** | **Dirichlet-VAE (ours)** | **0.0423** | **0.0756** |
-
-✅ **+32% improvement** in endmember estimation  
-✅ **+23% improvement** in abundance estimation  
-✅ **No post-processing normalization needed**
+| Dataset | Method | MSE Reconstruction↓ | Endmembers similarity: Mean cosine  ↓ | Spatial coherence of abundance maps (lower is smoother): TV mean↓ |
+|----------|---------|------------------|------------------|------------------|
+| **Samson** | **Dirichlet-VAE** | **4.85e-3** | **0.99** |**4.69e-2**
 
 ---
 
