@@ -112,7 +112,7 @@ The overall loss combines **spectral reconstruction** and **Dirichlet regulariza
 ### 1️⃣ Reconstruction Loss
 
 $$
-\mathcal{L}_{\text{recon}} = \text{SAD}(\mathbf{x}, \hat{\mathbf{x}}) + 0.1\,\text{MSE}(\mathbf{x}, \hat{\mathbf{x}})
+\mathcal{L}_{\text{recon}} = \text{SAD}(\mathbf{x}, \hat{\mathbf{x}}) + 0.1\text{MSE}(\mathbf{x}, \hat{\mathbf{x}})
 $$
 
 where
