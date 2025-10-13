@@ -133,7 +133,7 @@ $$
 ### 3️⃣ Total Objective
 
 $$
-\mathcal{L} = \lambda_{\text{recon}} \, \mathcal{L}_{\text{recon}} + \lambda_{\text{KL}} \, \mathcal{L}_{\text{KL}}
+\mathcal{L} = \lambda_{\text{recon}} \, \mathcal{L}_{\text{recon}} + \lambda_{\text{KL}} \mathcal{L}_{\text{KL}}
 $$
 
 ---
