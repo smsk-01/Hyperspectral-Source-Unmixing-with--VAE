@@ -1,6 +1,6 @@
 # 🛰️ Beta-VAE for Hyperspectral Unmixing
 
-A **deep learning framework** for hyperspectral unmixing using **Variational Autoencoders** with **Dirichlet latent distributions**, achieving **state-of-the-art performance** on benchmark datasets.
+Hyperspectral unmixing using **Variational Autoencoders** with **Dirichlet latent distributions**, achieving **state-of-the-art performance** on benchmark datasets.
 
 ---
 
