@@ -1,4 +1,4 @@
-# 🛰️ Beta-VAE for Hyperspectral Unmixing
+<img width="971" height="394" alt="Capture d’écran 2025-10-15 à 14 37 27" src="https://github.com/user-attachments/assets/3bdbcd35-f9da-4c20-aa19-852e4efbd0c2" /># 🛰️ Beta-VAE for Hyperspectral Unmixing
 
 Hyperspectral unmixing using **Variational Autoencoders** with **Dirichlet latent distributions**, achieving **state-of-the-art performance** on benchmark datasets.
 
@@ -48,6 +48,7 @@ so that $\mathbf{A}$ lies on a **unit simplex**.
 <p align="center">
   <img src="endmembers.png" alt="Model Architecture" width="55%">
   <img src="abundances.png" alt="Reconstruction Results" width="55%">
+  <img width="971" height="394" alt="Capture d’écran 2025-10-15 à 14 37 27" src="https://github.com/user-attachments/assets/324fedef-4bba-4e66-a7eb-f2e185b261ca" />
 </p>
 
 
