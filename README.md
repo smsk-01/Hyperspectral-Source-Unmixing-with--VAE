@@ -1,4 +1,4 @@
-<img width="971" height="394" alt="Capture d’écran 2025-10-15 à 14 37 27" src="https://github.com/user-attachments/assets/3bdbcd35-f9da-4c20-aa19-852e4efbd0c2" /># 🛰️ Beta-VAE for Hyperspectral Unmixing
+# 🛰️ Beta-VAE for Hyperspectral Unmixing
 
 Hyperspectral unmixing using **Variational Autoencoders** with **Dirichlet latent distributions**, achieving **state-of-the-art performance** on benchmark datasets.
 
