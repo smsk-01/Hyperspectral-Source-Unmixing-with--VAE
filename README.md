@@ -52,11 +52,7 @@ so that $\mathbf{A}$ lies on a **unit simplex**.
 </p>
 
 
-| Type | Example | Limitation |
-|------|----------|-------------|
-| Geometric | N-FINDR, VCA | Sensitive to noise |
-| Analytical | FCLS | Requires known endmembers |
-| Deep learning | CNN-based AE/UNet | Weak simplex enforcement |
+
 
 **Most existing approaches** fail to jointly:
 - enforce **sum-to-one** naturally,  
